@@ -1,0 +1,108 @@
+#? stdtmpl | standard
+#import packages/docutils/rstgen, strtabs
+#proc writeHTMLPage(title: string, pages: openArray[string]) : string =
+#  result = ""
+<head>
+  <meta charset="utf-8"/>
+  <title>$title</title>
+  <link rel=icon type="image/x-icon" href="https://nim-lang.org/assets/img/logo_bw.png">
+  <meta name=description content="3D HTML5 Book">
+  <script>
+# result &= readFile("jquery.min.js")
+# result &= readFile("turn.js")
+  </script>
+  <style>
+  body {
+    overflow:hidden;
+  }
+  html {
+    background:
+	radial-gradient(at bottom right, dodgerblue 0, dodgerblue 1em, lightskyblue 1em, lightskyblue 2em, deepskyblue 2em, deepskyblue 3em, gainsboro 3em, gainsboro 4em, lightsteelblue 4em, lightsteelblue 5em, deepskyblue 5em, deepskyblue 6em, lightskyblue 6em, lightskyblue 7em, transparent 7em, transparent 8em),
+		radial-gradient(
+			at top left,
+			transparent 0,
+			transparent 1em,
+			lightskyblue 1em,
+			lightskyblue 2em,
+			deepskyblue 2em,
+			deepskyblue 3em,
+			lightsteelblue 3em,
+			lightsteelblue 4em,
+			gainsboro 4em,
+			gainsboro 5em,
+			deepskyblue 5em,
+			deepskyblue 6em,
+			skyblue 6em,
+			skyblue 7em,
+			dodgerblue 7em,
+			dodgerblue 8em,
+			transparent 8em,
+			transparent 20em
+		),
+		radial-gradient(circle at center bottom, coral, darkslateblue);
+  background-blend-mode: overlay;
+  background-size: 8em 8em, 8em 8em, cover;
+  }
+  div#flipbook {
+    width: 99%;
+    height: 99%;
+    overflow: hidden;
+  }
+  div#flipbook > div {
+    background: white;
+    background-color:white;
+  }
+  div#flipbook .page-wrapper{
+    background: white;
+    -webkit-perspective:2000px;
+    -moz-perspective:2000px;
+    -ms-perspective:2000px;
+    -o-perspective:2000px;
+    perspective:2000px;
+  }
+  div#flipbook .hard {
+    background:#ccc !important;
+    color:#333;
+    -webkit-box-shadow:inset 0 0 5px #666;
+    -moz-box-shadow:inset 0 0 5px #666;
+    -o-box-shadow:inset 0 0 5px #666;
+    -ms-box-shadow:inset 0 0 5px #666;
+    box-shadow:inset 0 0 5px #666;
+    font-weight:bold;
+  }
+  button {
+    position:absolute;
+    top: 1px;
+    left:1px;
+  }
+  </style>
+</head>
+
+
+<div id="zoom-viewport">
+   <div id="flipbook">
+       <div class="hard"><center><h1>$title</h1></center></div>
+       <div class="hard"></div>
+
+#for tab in items(pages):
+<div>
+#  result &= rstToHtml($tab, {}, newStringTable(modeStyleInsensitive))
+</div>
+#end for
+
+       <div class="hard"></div>
+       <div class="hard"></div>
+   </div>
+</div>
+<button title="Download PDF">Download PDF</button>
+
+<script>
+$$("#flipbook").turn({
+  // width: 400, height: 300, // Defaults to Parent.
+  display: "double", // "single"
+  autoCenter: true,
+  gradients: true,
+  acceleration: true,
+  duration: 1000,
+});
+</script>
